@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Moment from 'react-moment';
 import logo from './assets/transit-logo.png';
+import rail from './assets/rail.png';
 import './Arrival.css';
 
 class Arrival extends Component {
@@ -44,17 +45,20 @@ class Arrival extends Component {
     } else {
       return (
         <div className="arrival-container">
-          <img className="logo" src={logo} />
+          <div className="arrival">
+            <img className="logo" src={logo} />
             {arrival.map(arrival => (
-            <div className="results">
+              <div className="results">
                 <h3>{arrival.shortSign}</h3>
                 <h3>
                   <Moment format="LT">
                     {arrival.scheduled}
                   </Moment>
                 </h3>
-            </div>
+              </div>
             ))}
+          </div>
+          <img className="rail" src={rail} />
         </div>
       );
     }

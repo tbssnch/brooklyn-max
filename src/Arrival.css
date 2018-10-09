@@ -1,22 +1,20 @@
-.arrival-container {
+.arrival {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* text-align: center; */
   align-items: center;
-  height: 100vh;
 }
 
 .logo {
-  width: 30%;
-  margin-bottom: 25px;
+  width: 20%;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 
 .results {
   display: flex;
   width: 50vw;
   justify-content: space-between;
-  /* flex-direction: row; */
   text-align: left;
   align-content: center;
   border: 8px solid #8a2332;
@@ -29,4 +27,9 @@
 
 h3 {
   color: #313639;
+}
+
+.rail {
+  width: 300px;
+  margin-top: 10px;
 }
