@@ -1,13 +1,32 @@
-.going-west {
+.arrival-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  text-align: center;
+  /* text-align: center; */
   align-items: center;
   height: 100vh;
 }
 
-ul {
-  list-style: none;
-  color: #323232;
+.logo {
+  width: 30%;
+  margin-bottom: 25px;
+}
+
+.results {
+  display: flex;
+  width: 50vw;
+  justify-content: space-between;
+  /* flex-direction: row; */
+  text-align: left;
+  align-content: center;
+  border: 8px solid #8a2332;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 5px 8px #306095;
+}
+
+h3 {
+  color: #313639;
 }
