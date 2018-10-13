@@ -39,7 +39,7 @@ Contact Tyler at tbssnch@gmail.com
 
 ## Technologies Used
 
-HTML, CSS, JSX, JavaScript, React, Moment, TriMet API.
+HTML, CSS, JavaScript, React, Moment, TriMet API.
 
 ## License
 
