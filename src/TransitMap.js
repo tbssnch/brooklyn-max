@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Arrival from './Arrival.js';
+import './TransitMap.css';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
+import TrimetIcon from './assets/trimet-icon.png';
 
 
 
@@ -15,7 +17,9 @@ const TransitMap = withScriptjs(withGoogleMap((props) => {
         location={{lat: position.lat, lng: position.lng}}
           /> */}
       <Marker 
-        position={{ lat: position.lat, lng: position.lng}} />
+        defaultSize={10}
+        position={{ lat: position.lat, lng: position.lng}}
+        icon={TrimetIcon} />
     </GoogleMap>
   );
 }));
