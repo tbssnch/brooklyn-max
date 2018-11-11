@@ -22,10 +22,19 @@ class Arrival extends Component {
     console.log(this.state)
   }
 
+  componentDidMount() {
+    this.intervalId = setInterval(() => this.fetchArrivalTimes(), 3600);
+    this.fetchArrivalTimes();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
     fetchArrivalTimes = () => {
       console.log("HEY")
       const API_KEY = `${process.env.REACT_APP_TRIMET_KEY}`;
-      fetch(`https://developer.trimet.org/ws/V1/arrivals?locIDs=${this.state.stopId}&appID=${API_KEY}&json=true`)
+      fetch(`https://developer.trimet.org/ws/V1/arrivals?locIDs=13178&appID=${API_KEY}&json=true`)
       .then(res => res.json())
       .then((res) => this.setState({
         isLoaded: true, 
@@ -39,12 +48,13 @@ class Arrival extends Component {
     }
 
 
+    handleSubmit = event => {
+      event.preventDefault()
+      this.fetchArrivalTimes()
+    }
+    
   handleChange = ({ target: {name, value} }) => this.setState ({ [name] : value })
 
-  handleSubmit = event => {
-    event.preventDefault()
-    this.fetchArrivalTimes()
-  }
 
   render() {
     const { error, arrival, stopId, position } = this.state;
