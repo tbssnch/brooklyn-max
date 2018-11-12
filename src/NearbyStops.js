@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { geolocated } from 'react-geolocated';
 
 
 class NearbyStops extends Component {
@@ -11,25 +12,35 @@ class NearbyStops extends Component {
     };
   }
 
-  componentDidMount() {
-    this.fetchNearbyStops();
+  componentDidUpdate(prevProps) {
+    if (this.props.coords !== prevProps.coords) {
+      this.fetchNearbyStops();
+    }
   }
 
   fetchNearbyStops = () => {
     const API_KEY = `${process.env.REACT_APP_TRIMET_KEY}`;
-    fetch(`https://developer.trimet.org/ws/V1/stops?json=true&appID=${API_KEY}&ll=45.498961, -122.656801&feet=1000`)
-    .then(res => res.json())
-    .then((res) => this.setState({
-      isLoaded: true,
-      location: res.resultSet.location
-    }))
-    .catch(error => this.setState(
-      {isLoaded: true, error}))
+    const { coords } = this.props;
+    if(coords) {
+      console.log("if");
+      fetch(`https://developer.trimet.org/ws/V1/stops?json=true&appID=${API_KEY}&ll=${coords.latitude}, ${coords.longitude}&feet=1000`)
+      .then(res => res.json())
+      .then((res) => this.setState({
+        isLoaded: true,
+        location: res.resultSet.location
+      }))
+      .catch(error => this.setState(
+        {isLoaded: true, error}))
+      } else {
+        console.log("else");
+        alert("Location is not available")
+    }
   }
 
   render() {
     const { error, location, desc} = this.state;
-    console.log(this.state);
+    // console.log(this.state);
+    console.log(this.props);
     return (
       <div className="stop-container">
       {location.length > 0
@@ -39,7 +50,7 @@ class NearbyStops extends Component {
         </div>
       ))
       :
-      (<h1>Test</h1>)
+      (<h1>Location unavailable</h1>)
     }
         
       </div>
@@ -47,4 +58,10 @@ class NearbyStops extends Component {
   }
 }
 
-export default NearbyStops;
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: false,
+    maximumAge: 0
+  },
+  userDecisionTimeout: null
+})(NearbyStops);
