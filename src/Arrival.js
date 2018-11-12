@@ -23,35 +23,54 @@ class Arrival extends Component {
   }
 
   componentDidMount() {
-    this.intervalId = setInterval(() => this.fetchArrivalTimes(), 3600);
-    this.fetchArrivalTimes();
+  }
+  
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.stopId !== prevProps.stopId) {
+      this.setState({
+        stopId: this.props.stopId
+      });
+      // Clear interval
+      clearInterval(this.intervalId);
+    }
+    // Check if stopId in the state or props has changed
+    if (this.state.stopId !== prevState.stopId ||
+        this.props.stopId !== prevProps.stopId
+      ) {
+      // Fetch location every 3.5 seconds
+      this.intervalId = setInterval(() => this.fetchArrivalTimes(), 3500);
+    }
   }
 
   componentWillUnmount() {
     clearInterval(this.intervalId);
   }
 
-    fetchArrivalTimes = () => {
-      console.log("HEY")
-      const API_KEY = `${process.env.REACT_APP_TRIMET_KEY}`;
-      fetch(`https://developer.trimet.org/ws/V1/arrivals?locIDs=13178&appID=${API_KEY}&json=true`)
-      .then(res => res.json())
-      .then((res) => this.setState({
-        isLoaded: true, 
-        arrival: res.resultSet.arrival, 
-        position: { 
-          lng: res.resultSet.arrival[0].blockPosition.lng, 
-          lat: res.resultSet.arrival[0].blockPosition.lat
-        }
-      }))
-      .catch(error => this.setState({isLoaded: true, error}))
-    }
+
+  // Fetch Arrivals when user submits the form
+  fetchArrivalTimes = () => {
+    console.log("HEY")
+    const API_KEY = `${process.env.REACT_APP_TRIMET_KEY}`;
+    // @TODO: Check if user enter Stop ID
+    // if stopid is '' alert enter stop id
+    fetch(`https://developer.trimet.org/ws/V1/arrivals?locIDs=${this.state.stopId}&appID=${API_KEY}&json=true`)
+    .then(res => res.json())
+    .then((res) => this.setState({
+      isLoaded: true, 
+      arrival: res.resultSet.arrival, 
+      position: { 
+        lng: res.resultSet.arrival[0].blockPosition.lng, 
+        lat: res.resultSet.arrival[0].blockPosition.lat
+      }
+    }))
+    .catch(error => this.setState({isLoaded: true, error}))
+  }
 
 
-    handleSubmit = event => {
-      event.preventDefault()
-      this.fetchArrivalTimes()
-    }
+  handleSubmit = event => {
+    event.preventDefault()
+    this.fetchArrivalTimes()
+  }
     
   handleChange = ({ target: {name, value} }) => this.setState ({ [name] : value })
 

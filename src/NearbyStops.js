@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
 import { geolocated } from 'react-geolocated';
 
+import { withStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+
+const styles = theme => ({
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 300
+  }
+});
+
 
 class NearbyStops extends Component {
   constructor(props) {
@@ -9,6 +23,7 @@ class NearbyStops extends Component {
       location: [],
       error: null,
       desc: '',
+      locid: ''
     };
   }
 
@@ -37,31 +52,51 @@ class NearbyStops extends Component {
     }
   }
 
+  onHandleChange = event => {
+    this.props.handleChange(event);
+  };
+
   render() {
-    const { error, location, desc} = this.state;
+    const { error, location, desc, locid } = this.state;
+    const { classes } = this.props;
     // console.log(this.state);
     console.log(this.props);
+    
     return (
       <div className="stop-container">
-      {location.length > 0
-      ? location.map(({ desc, dir }) => (
-        <div key={dir} className="nearby-results">
-          <h3>{desc}</h3>
+        <div className="input-field col s12">
+        <FormControl className={classes.formControl}>
+          <InputLabel htmlFor='stop-id'>Choose a Stop ID</InputLabel>
+          <Select
+            value={this.props.locid}
+            onChange={this.onHandleChange}
+            inputProps={{
+              name: 'locid',
+              id: 'stop-id'
+            }}
+          >
+            {location.length > 0
+            ? location.map(({ desc, locid, lat }) => (
+              <MenuItem key={lat} value={locid} className="nearby-results">
+                {desc + ' '}
+                {locid}
+              </MenuItem>
+            ))
+            : (<MenuItem value="">No location found</MenuItem>)
+            
+          }
+          </Select>
+        </FormControl>
         </div>
-      ))
-      :
-      (<h1>Location unavailable</h1>)
-    }
-        
       </div>
     );
   }
 }
 
-export default geolocated({
+export default withStyles(styles)(geolocated({
   positionOptions: {
     enableHighAccuracy: false,
     maximumAge: 0
   },
   userDecisionTimeout: null
-})(NearbyStops);
+})(NearbyStops));
