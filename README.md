@@ -1,10 +1,10 @@
-# Brooklyn Rail
-### An application designed to view the scheduled MAX time for a specific stop.
+# TriMet Transit Tracker
+### An application designed to show incoming arrivals for TriMet stops.
 ### **By Tyler Bussanich**
 
 ## Description
 
-A simple application to show the next MAX trains in the Brooklyn neighborhood
+This application allows the user to view incoming arrival times for the bus/MAX through nearby stops in the area or entering any TriMet Stop ID. The application also has a feature to view the exact position of the incoming bus/MAX on Google Maps. 
 
 
 
@@ -39,7 +39,7 @@ Contact Tyler at tbssnch@gmail.com
 
 ## Technologies Used
 
-HTML, CSS, JavaScript, React, Moment, TriMet API.
+HTML, CSS, JavaScript, React, Moment, TriMet API, Google Maps API, Material-UI.
 
 ## License
 
