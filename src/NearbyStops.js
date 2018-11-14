@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { geolocated } from 'react-geolocated';
 
+import TransitMap from './TransitMap.js';
+
+
 import { withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,11 +12,18 @@ import Select from '@material-ui/core/Select';
 
 
 const styles = theme => ({
+  root: {
+    display: 'block',
+    margin: '0 auto',
+    width: '300px'
+  },
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 300
   }
 });
+
+
 
 
 class NearbyStops extends Component {
@@ -58,36 +68,37 @@ class NearbyStops extends Component {
 
   render() {
     const { error, location, desc, locid } = this.state;
-    const { classes } = this.props;
+    const { classes, coords } = this.props;
     // console.log(this.state);
     console.log(this.props);
     
     return (
       <div className="stop-container">
-        <div className="input-field col s12">
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor='stop-id'>Choose a Stop ID</InputLabel>
+          <InputLabel htmlFor='stop-id'>Locate Nearby Stops</InputLabel>
           <Select
             value={this.props.locid}
             onChange={this.onHandleChange}
+            classes={{
+              root: classes.root
+            }}
             inputProps={{
               name: 'locid',
               id: 'stop-id'
             }}
           >
             {location.length > 0
-            ? location.map(({ desc, locid, lat }) => (
+            ? location.map(({ desc, locid, lat, dir }) => (
               <MenuItem key={lat} value={locid} className="nearby-results">
-                {desc + ' '}
-                {locid}
+                {`${desc} ${dir} ${locid}`}
               </MenuItem>
             ))
             : (<MenuItem value="">No location found</MenuItem>)
             
           }
           </Select>
+
         </FormControl>
-        </div>
       </div>
     );
   }

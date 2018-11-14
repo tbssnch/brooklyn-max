@@ -1,4 +1,24 @@
-.arrival {
+.arrival form {
+  width: 300px;
+  margin: 0 auto 5rem;
+}
+
+.arrival .results h3 {
+  margin: 1.5rem auto;
+  font-weight: 600;
+  font-size: 1em;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+}
+
+
+
+
+
+
+/* .arrival {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,4 +52,4 @@ h3 {
 .rail {
   width: 300px;
   margin-top: 10px;
-}
+} */

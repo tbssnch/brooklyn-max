@@ -1,1 +1,42 @@
+.logo { 
+  display: block;
+  margin: 30px auto 20px;
+  width: 400px;
+}
 
+.separator {
+  width: 100%;
+  max-width: 300px;
+  margin: 2.5rem auto 1rem;
+  position: relative;
+  text-align: center;
+}
+
+.separator::before, .separator::after {
+  position: absolute;
+  top: 8px;
+  content: '';
+  width: 80px;
+  height: 2px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.separator::before {
+  left: 190px;
+}
+
+.separator::after {
+  right: 190px;
+}
+
+.Geolocated-NearbyStops--formControl-2 {
+  display: block !important;
+  margin: 0 auto !important;
+  padding: 0.6rem 0 !important;
+  width: 300px;
+}
+
+
+input:-webkit-autofill {
+  background: transparent !important;
+}

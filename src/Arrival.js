@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
 import Moment from 'react-moment';
-import logo from './assets/transit-logo.png';
 import rail from './assets/rail.png';
+
+// Material Styles
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import TransitMap from './TransitMap.js';
 import './Arrival.css';
+
+const styles = {
+  textField: {
+    width: '100%',
+    marginBottom: '1rem'
+  },
+  button: {
+    width: '100%'
+  }
+}
 
 
 class Arrival extends Component {
@@ -13,11 +27,7 @@ class Arrival extends Component {
     this.state = {
       arrival: [],
       error: null,
-      stopId: '',
-      position: {
-        lng: '',
-        lat: ''
-      }
+      stopId: ''
     };
     console.log(this.state)
   }
@@ -31,20 +41,20 @@ class Arrival extends Component {
         stopId: this.props.stopId
       });
       // Clear interval
-      clearInterval(this.intervalId);
+      // clearInterval(this.intervalId);
     }
     // Check if stopId in the state or props has changed
-    if (this.state.stopId !== prevState.stopId ||
-        this.props.stopId !== prevProps.stopId
-      ) {
+    // if (this.state.stopId !== prevState.stopId ||
+    //     this.props.stopId !== prevProps.stopId
+      // ) {
       // Fetch location every 3.5 seconds
-      this.intervalId = setInterval(() => this.fetchArrivalTimes(), 3500);
-    }
+      // this.intervalId = setInterval(() => this.fetchArrivalTimes(), 3500);
+    // }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.intervalId);
+  // }
 
 
   // Fetch Arrivals when user submits the form
@@ -55,14 +65,13 @@ class Arrival extends Component {
     // if stopid is '' alert enter stop id
     fetch(`https://developer.trimet.org/ws/V1/arrivals?locIDs=${this.state.stopId}&appID=${API_KEY}&json=true`)
     .then(res => res.json())
-    .then((res) => this.setState({
-      isLoaded: true, 
-      arrival: res.resultSet.arrival, 
-      position: { 
-        lng: res.resultSet.arrival[0].blockPosition.lng, 
-        lat: res.resultSet.arrival[0].blockPosition.lat
-      }
-    }))
+    .then((res) => {
+      console.log(res.resultSet)
+      this.setState({
+        isLoaded: true, 
+        arrival: res.resultSet.arrival
+      })
+    })
     .catch(error => this.setState({isLoaded: true, error}))
   }
 
@@ -76,47 +85,61 @@ class Arrival extends Component {
 
 
   render() {
-    const { error, arrival, stopId, position } = this.state;
-    console.log(this.state.stopId)
+    const { error, arrival, stopId } = this.state;
+    console.log(this.state.arrival, "arrival")
+    
     if (error) return <div>Error: {error.message}</div>
 
       return (
         <div className="arrival-container">
           <div className="arrival">
-            <img className="logo" src={logo} />
-            <form onSubmit={this.handleSubmit}>
-              <input
-                type="text"
-                placeholder="Stop ID"
-                onChange={this.handleChange}
+            <form>
+
+              <TextField
+                label="Enter any Stop ID"
                 value={stopId}
-                name="stopId" />
-              <input type="submit" value="Submit" />
+                name="stopId"
+                onChange={this.handleChange}
+                margin="normal"
+                style={styles.textField}
+              />
+              <Button 
+                onClick={this.handleSubmit} 
+                variant="outlined"
+                style={styles.button}
+                >
+                Go
+              </Button>
             </form>
+            <Grid container spacing={8}>
             {arrival.length > 0 
-            ? arrival.map(({ estimated, shortSign, scheduled }) => (
-              <div key={estimated} className="results">
-                <h3>{shortSign}</h3>
-                <h3>
-                  Scheduled:  
-                  <Moment format="LT">
-                    {scheduled}
-                  </Moment>
-                  <TransitMap
-                      position={position}
+            ? arrival.map(({ estimated, shortSign, scheduled, blockPosition: { lng, lat } }) => (
+              <Grid item xs={12} sm={12} md={6} lg={4} key={estimated}>
+                <div  className="results">
+                  <h3>
+                    <span>{shortSign}</span>
+                    <span>
+                      Scheduled:  
+                      <Moment format="LT">
+                        {scheduled}
+                      </Moment>
+                    </span>
+                  </h3>
+                    <TransitMap
+                      position={{ lng, lat }}
                       googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyDcB-Hvjon7joaUK_-yOHUmvZzDHnq6Yls&v=3.exp&libraries=geometry,drawing,places`}
                       loadingElement={<div style={{ height: `100%` }} />}
-                      containerElement={<div style={{ height: `600px`, width: `600px` }} />}
+                      containerElement={<div style={{ height: `400px`, width: `400px`, margin: `auto` }} />}
                       mapElement={<div style={{ height: `100%` }} />}
                     />
-                </h3>
-              </div>
+                </div>
+              </Grid>
             ))
               :
-              (<h1>Enter a stop ID to see arrivals</h1>)
+              null
             }
+            </Grid>
           </div>
-          <img className="rail" src={rail} />
         </div>
       );
     }
