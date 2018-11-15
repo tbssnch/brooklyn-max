@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import { geolocated } from 'react-geolocated';
 import './NearbyStops.css';
 
-import TransitMap from './TransitMap.js';
-
 // Material styles
 import { withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
 
 const styles = theme => ({
   root: {
@@ -23,9 +20,6 @@ const styles = theme => ({
     minWidth: 300
   }
 });
-
-
-
 
 class NearbyStops extends Component {
   constructor(props) {
@@ -70,8 +64,6 @@ class NearbyStops extends Component {
   render() {
     const { error, location, desc, locid } = this.state;
     const { classes, coords } = this.props;
-    // console.log(this.state);
-    console.log(this.props);
     
     return (
       <div className="stop-container">
@@ -94,11 +86,9 @@ class NearbyStops extends Component {
                 {`${desc} ${dir} ${locid}`}
               </MenuItem>
             ))
-            : (<MenuItem value="">No location found</MenuItem>)
-            
+            : (<MenuItem value="">Locating nearby stops...</MenuItem>)
           }
           </Select>
-
         </FormControl>
       </div>
     );

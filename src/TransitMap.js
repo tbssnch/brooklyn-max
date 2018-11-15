@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import Arrival from './Arrival.js';
-import './TransitMap.css';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from 'react-google-maps';
 import TrimetIcon from './assets/trimet-icon.png';
-
-
 
 const TransitMap = withScriptjs(
   withGoogleMap(

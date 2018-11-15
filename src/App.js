@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
-
-// Assests
 import './App.css';
 import logo from './assets/trimet.png';
-
-// Components
 import Arrival from './Arrival.js';
 import NearbyStops from './NearbyStops.js';
-
-//Material UI Components
-import Typography from '@material-ui/core/Typography';
-
 
 class App extends Component {
   state = {
@@ -18,8 +10,6 @@ class App extends Component {
   }
 
   handleOnChange = event => {
-    console.log(event);
-    
     this.setState({ [event.target.name]: event.target.value });
   }
 
