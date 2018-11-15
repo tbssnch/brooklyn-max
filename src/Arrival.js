@@ -59,12 +59,23 @@ class Arrival extends Component {
     fetch(`https://developer.trimet.org/ws/V1/arrivals?locIDs=${this.state.stopId}&appID=${API_KEY}&json=true`)
     .then(res => res.json())
     .then((res) => {
+      // Filter arrivals array based on blockPosition to get lng and lat
+      const arrivals = res.resultSet.arrival.filter(item => {
+        if (item.hasOwnProperty('blockPosition')) return item
+      });
+      // Check filtered array and if empty means the bus is out of service and set error state
+      if (!arrivals.length > 0) {
+        this.setState({
+          error: 'Sorry! This line is out of service for the evening.)'
+        })
+      }
+
       this.setState({
         isLoaded: true, 
-        arrival: res.resultSet.arrival
+        arrival: arrivals
       })
     })
-    .catch(error => this.setState({isLoaded: true, error}))
+    .catch(error => this.setState({ isLoaded: true, error: error.message }))
   }
 
   handleSubmit = event => {
@@ -77,12 +88,11 @@ class Arrival extends Component {
   render() {
     const { error, arrival, stopId } = this.state;
     const GOOGLE_API_KEY = `${process.env.REACT_APP_GOOGLEMAPS_KEY}`;
-    if (error) return <div>Error: {error.message}</div>
-
+    
       return (
         <div className="arrival-container">
           <div className="arrival">
-            <form>
+            <form onSubmit={this.handleSubmit}>
               <TextField
                 label="Enter any Stop ID"
                 value={stopId}
@@ -92,39 +102,39 @@ class Arrival extends Component {
                 style={styles.textField}
               />
               <Button 
-                onClick={this.handleSubmit} 
                 variant="outlined"
                 style={styles.button}
+                type="submit"
                 >
                 Go
               </Button>
             </form>
             <Grid container spacing={8}>
-            {arrival.length > 0 
+            {arrival.length > 0
             ? arrival.map(({ estimated, shortSign, scheduled, blockPosition: { lng, lat } }) => (
-              <Grid item xs={12} sm={12} md={6} lg={4} key={estimated}>
-                <div  className="results">
-                  <h3>
-                    <span>{shortSign}</span>
-                    <span>
-                      Scheduled:  
-                      <Moment format="LT">
-                        {scheduled}
-                      </Moment>
-                    </span>
-                  </h3>
-                    <TransitMap
-                      position={{ lng, lat }}
-                      googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-                      loadingElement={<div style={{ height: `100%` }} />}
-                      containerElement={<div style={{ height: `400px`, width: `400px`, margin: `auto` }} />}
-                      mapElement={<div style={{ height: `100%` }} />}
-                    />
-                </div>
-              </Grid>
+            <Grid item xs={12} sm={12} md={6} lg={4} key={estimated}>
+              <div  className="results">
+                <h3>
+                  <span>{shortSign}</span>
+                  <span>
+                    Scheduled:  
+                    <Moment format="LT">
+                      {scheduled}
+                    </Moment>
+                  </span>
+                </h3>
+                  <TransitMap
+                    position={{ lng, lat }}
+                    googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `400px`, width: `400px`, margin: `auto` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                  />
+              </div>
+            </Grid>
             ))
               :
-              null
+              error && (<h3 style={{ margin: 'auto' }}>{error}</h3>)
             }
             </Grid>
           </div>
