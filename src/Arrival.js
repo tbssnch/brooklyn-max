@@ -66,7 +66,7 @@ class Arrival extends Component {
       // Check filtered array and if empty means the bus is out of service and set error state
       if (!arrivals.length > 0) {
         this.setState({
-          error: 'Sorry! This line is out of service for the evening.)'
+          error: 'Sorry! This line is out of service for the evening.'
         })
       }
 
