@@ -10,7 +10,7 @@ This application allows the user to view incoming arrival times for the bus/MAX 
 
 ## Setup/Installation
 
-Visit https://bit.ly/2PtLHlT
+Visit https://bit.ly/2TdVC1m
 
 or
 
@@ -20,9 +20,9 @@ Type "cd desktop" and hit enter.
 
 After you are in the desktop,
 
-Type "git clone https://github.com/tbssnch/brooklyn-rail.git" and hit enter.
+Type "git clone https://github.com/tbssnch/transit-tracker.git" and hit enter.
 
-Now, type in "cd brooklyn-rail" and hit enter
+Now, type in "cd transit-tracker" and hit enter
 
 Next, type "atom ." (or whichever text editor you prefer) and hit enter.
 
@@ -39,7 +39,7 @@ Contact Tyler at tbssnch@gmail.com
 
 ## Technologies Used
 
-HTML, CSS, JavaScript, React, Moment, TriMet API, Google Maps API, Material-UI.
+HTML, CSS, JavaScript, React, Moment, TriMet API, Google Maps API, Material-UI, and React Geolocated .
 
 ## License
 
