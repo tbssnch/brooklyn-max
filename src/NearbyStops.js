@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { geolocated } from 'react-geolocated';
+import './NearbyStops.css';
 
 import TransitMap from './TransitMap.js';
 
-
+// Material styles
 import { withStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
